@@ -159,6 +159,8 @@
     <ClCompile Include="list.c" />
     <ClCompile Include="registry.c" />
     <ClCompile Include="string.c" />
+    <ClCompile Include="StrList.c" />
+    <ClCompile Include="strlist.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="args.h" />

@@ -39,6 +39,12 @@
     <ClCompile Include="string.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="strlist.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StrList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="args.h">

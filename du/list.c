@@ -11,8 +11,8 @@ bool isListEmpty(const List *list) {
     return list == NULL;
 }
 
-void* removeListItem(List **l) {
-    void *data;
+wchar_t* removeListItem(List **l) {
+    wchar_t *data;
 
     data = (*l)->data;
     *l = (*l)->next;
@@ -20,7 +20,7 @@ void* removeListItem(List **l) {
 }
 
 /* Make sure the data is dynamically allocated and no other code has access to it. */
-List* appendListItem(List **l, void *data) {
+List* appendListItem(List **l, wchar_t *data) {
     struct ListNode *node;
     struct ListNode *toPutAtEnd;
 
@@ -40,7 +40,7 @@ List* appendListItem(List **l, void *data) {
     return *l;
 }
 
-const void* getListItem(const List *l) {
+const wchar_t* getListItem(const List *l) {
     return l->data;
 }
 
@@ -67,7 +67,7 @@ void printStringList(const List* l)
     const struct ListNode* node;
     node = l;
     while (node != NULL) {
-        wprintf(L"%ls\n", (wchar_t *) node->data);
+        wprintf(L"%ls\n", node->data);
         node = node->next;
     }
     fflush(stdout);
