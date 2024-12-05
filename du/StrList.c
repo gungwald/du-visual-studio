@@ -46,57 +46,64 @@ wchar_t* removeListItem(List* l) {
 }
 
 /* Make sure the data is dynamically allocated and no other code has access to it. */
-List* appendListItem(List** l, wchar_t* data) {
-    struct ListNode* node;
+List* appendListItem(List* l, wchar_t* data) {
     struct ListNode* toPutAtEnd;
 
     toPutAtEnd = (struct ListNode*)GC_MALLOC(sizeof(struct ListNode));
+    if (toPutAtEnd == NULL) {
+        _wperror(L"Failed to allocate memory for new list item");
+        exit(EXIT_FAILURE);
+    }
     toPutAtEnd->data = data;
     toPutAtEnd->next = NULL;
 
-    if (*l == NULL) {
-        *l = toPutAtEnd;
+    if (l->size == 0) {
+        l->first = toPutAtEnd;
+        l->cursor = toPutAtEnd;
+    } else {
+        l->last->next = toPutAtEnd;
     }
-    else {
-        node = *l;
-        while (node->next != NULL) {
-            node = node->next;
-        }
-        node->next = toPutAtEnd;
-    }
-    return *l;
+    toPutAtEnd->prev = l->last;
+    l->last = toPutAtEnd;
+    l->size++;
+
+    return l;
 }
 
 const wchar_t* getListItem(const List* l) {
-    return l->data;
+    return l->cursor->data;
 }
 
-List* skipListItem(const List* l) {
-    return l->next;
+List* advanceList(List* l) {
+    if (l->cursor != l->last)
+        l->cursor = l->cursor->next;
+    return l;
+}
+
+bool isListAtEnd(List* l) {
+    return l->cursor == NULL;
 }
 
 size_t getListSize(const List* l) {
-    const struct ListNode* node;
-    size_t i;
+    return l->size;
+}
 
-    node = l;
-    i = 0;
-    while (node != NULL) {
-        node = node->next;
-        i++;
-    }
-    return i;
+List* resetList(List* l) {
+    l->cursor = l->first;
+    return l;
 }
 
 /* l better be a list of wchar_t * or this will crash. */
-void printStringList(const List* l)
+void printStringList(List* l)
 {
-    const struct ListNode* node;
-    node = l;
-    while (node != NULL) {
-        wprintf(L"%ls\n", node->data);
-        node = node->next;
+    struct ListNode* origCursor;
+    origCursor = l->cursor;
+    resetList(l);
+    while (!isListAtEnd(l)) {
+        wprintf(L"%ls\n", getListItem(l));
+        advanceList(l);
     }
     fflush(stdout);
+    l->cursor = origCursor;
 }
 
